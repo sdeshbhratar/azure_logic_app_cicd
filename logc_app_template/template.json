@@ -1,0 +1,75 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_arm_temp_la_sql_name": {
+            "defaultValue": "arm_temp_la_sql",
+            "type": "String"
+        },
+        "connections_sql_2_externalid": {
+            "defaultValue": "/subscriptions/d592119c-53f0-4005-94ae-770712efb2c6/resourceGroups/HSB_DCIP_Dev/providers/Microsoft.Web/connections/sql-2",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_arm_temp_la_sql_name')]",
+            "location": "eastus",
+            "tags": {
+                "CostCenter": "64216"
+            },
+            "properties": {
+                "state": "Disabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "Recurrence": {
+                            "recurrence": {
+                                "frequency": "Hour",
+                                "interval": 1
+                            },
+                            "type": "Recurrence"
+                        }
+                    },
+                    "actions": {
+                        "Execute_stored_procedure_(V2)": {
+                            "runAfter": {},
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['sql']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('default'))},@{encodeURIComponent(encodeURIComponent('default'))}/procedures/@{encodeURIComponent(encodeURIComponent('[dbo].[SP_OMS_Intg_Get_Prospect]'))}"
+                            }
+                        }
+                    },
+                    "outputs": {}
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "sql": {
+                                "connectionId": "[parameters('connections_sql_2_externalid')]",
+                                "connectionName": "sql-2",
+                                "id": "/subscriptions/d592119c-53f0-4005-94ae-770712efb2c6/providers/Microsoft.Web/locations/eastus/managedApis/sql"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}
