@@ -20,6 +20,9 @@
     "sqlPassword": {
       "value": "GEN-PASSWORD"
     },
+    "onPremGateway": {
+      "value": "On-Prem_Gateway-Name"
+    },
     "sqlProcedure": {
       "value": "[dbo].[uspMyProcedure]"
     }
