@@ -1,0 +1,30 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+  "parameters": {
+    "logicAppName": {
+      "value": "LogicAppName"
+    },
+    "sqlConnectionName": {
+      "value": "MySQLConnection"
+    },
+    "sqlServer": {
+      "value": "myserver.database.windows.net"
+    },
+    "sqlDatabase": {
+      "value": "mydatabase"
+    },
+    "sqlUser": {
+      "value": "user"
+    },
+    "sqlPassword": {
+      "value": "GEN-PASSWORD"
+    },
+    "onPremGateway": {
+      "value": "On-Prem_Gateway-Name"
+    },
+    "sqlProcedure": {
+      "value": "[dbo].[uspMyProcedure]"
+    }
+  }
+}
